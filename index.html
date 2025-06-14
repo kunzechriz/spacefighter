@@ -1,34 +1,48 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <title>Mein Spacefighter-Spiel</title>
-  <style>
-    /* Canvas soll Bildschirm füllen */
-    body, html {
-      margin: 0; padding: 0; height: 100%;
-      background: black;
-      overflow: hidden;
-    }
-    #canvas {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-    }
-  </style>
-</head>
-<body>
-  <canvas id="canvas"></canvas>
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <base href="/spacefighter/">
+    <meta charset="utf-8">
+    <title>Space Game</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: black;
+        overflow: hidden;
+      }
 
-  <script type="module">
-    import Module from './index.js';  // dein Emscripten JS-Wrapper
+      canvas.emscripten {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        background-color: black;
+      }
 
-    Module({
-      canvas: document.getElementById('canvas'),
-      // Optional: Module-Config hier rein (z.B. noExitRuntime, etc.)
-    }).then((mod) => {
-      // Spiel läuft automatisch, evtl. Init-Code hier
-    });
-  </script>
-</body>
+      #output {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+
+    <script>
+      var Module = {
+        preRun: [],
+        postRun: [],
+        print: function (text) {
+          if (text) console.log(text);
+        },
+        canvas: (function () {
+          return document.getElementById('canvas');
+        })(),
+        setStatus: function (text) {},
+        totalDependencies: 0,
+        monitorRunDependencies: function (left) {}
+      };
+    </script>
+
+    <script async type="text/javascript" src="spacefighter.js"></script>
+  </body>
 </html>
